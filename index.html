@@ -1,9 +1,13 @@
 <!doctype html>
-<html lang="en">
+<html lang="mn">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>For Amarjargal 💘</title>
+
+  <!-- Nice font for Mongolian + English -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
   <style>
     :root{
       --bg1:#ff9a9e;
@@ -19,13 +23,13 @@
     *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-family:'Noto Sans', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color:var(--text);
       background: linear-gradient(135deg, var(--bg1), var(--bg2));
       min-height:100vh;
       overflow-x:hidden;
     }
-    .wrap{max-width:980px; margin:0 auto; padding:26px 18px 70px;}
+    .wrap{max-width:1040px; margin:0 auto; padding:26px 18px 70px;}
     .hero{
       background:var(--card);
       backdrop-filter: blur(10px);
@@ -42,16 +46,11 @@
       align-items:center;
       flex-wrap:wrap;
     }
-    .title{
-      flex:1;
-      min-width:260px;
-    }
+    .title{flex:1; min-width:260px;}
     h1{margin:0 0 8px; font-size:34px; letter-spacing:.2px}
-    .subtitle{margin:0; color:var(--muted); font-size:16px; line-height:1.5}
+    .subtitle{margin:0; color:var(--muted); font-size:16px; line-height:1.6}
     .avatars{
-      display:flex;
-      gap:12px;
-      align-items:center;
+      display:flex; gap:12px; align-items:center;
     }
     .avatar{
       width:92px; height:92px;
@@ -82,12 +81,9 @@
       padding:18px;
       box-shadow: 0 14px 34px rgba(0,0,0,.12);
     }
-    .section h2{
-      margin:0 0 10px;
-      font-size:20px;
-      letter-spacing:.2px;
-    }
+    .section h2{margin:0 0 10px; font-size:20px; letter-spacing:.2px;}
     .section p{margin:10px 0; line-height:1.7}
+
     .pillRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
     .pill{
       border:none;
@@ -95,12 +91,12 @@
       border-radius:999px;
       background:var(--accent);
       color:#fff;
-      font-weight:700;
+      font-weight:800;
       cursor:pointer;
       transition:.2s;
     }
-    .pill.secondary{background: #111; opacity:.9}
-    .pill.soft{background: var(--accent2)}
+    .pill.secondary{background:#111; opacity:.92}
+    .pill.soft{background:var(--accent2)}
     .pill:hover{transform: translateY(-1px) scale(1.02)}
     .note{
       margin-top:10px;
@@ -110,14 +106,10 @@
       border:1px solid rgba(0,0,0,.06);
       color:var(--muted);
     }
+    .tiny{font-size:13px; color:rgba(0,0,0,.55); margin-top:8px}
 
     /* Timeline */
-    .timeline{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:12px;
-      margin-top:10px;
-    }
+    .timeline{display:grid; grid-template-columns: 1fr; gap:12px; margin-top:10px;}
     .event{
       display:flex;
       gap:14px;
@@ -129,18 +121,20 @@
       flex-wrap:wrap;
     }
     .event img{
-      width:140px; height:96px;
+      width:150px; height:100px;
       object-fit:cover;
       border-radius:18px;
       box-shadow:0 10px 22px rgba(0,0,0,.12);
       background:#f3f3f3;
+      cursor:pointer;
     }
-    .event .meta{
-      flex:1;
-      min-width:220px;
-    }
+    .event .meta{flex:1; min-width:220px;}
     .event .meta b{font-size:16px}
     .event .meta div{color:var(--muted); margin-top:4px; line-height:1.5}
+
+    /* Scroll reveal */
+    .reveal{opacity:0; transform: translateY(18px); transition: opacity .65s ease, transform .65s ease;}
+    .reveal.show{opacity:1; transform: translateY(0);}
 
     /* Modal */
     .modal{
@@ -154,7 +148,7 @@
     }
     .modal.open{display:flex}
     .modalCard{
-      width:min(720px, 100%);
+      width:min(760px, 100%);
       background:#fff;
       border-radius:26px;
       padding:16px;
@@ -170,8 +164,7 @@
     .x{
       border:none; background:#111; color:#fff;
       border-radius:999px; width:38px; height:38px;
-      cursor:pointer;
-      font-size:18px;
+      cursor:pointer; font-size:18px;
     }
     .modalImg{
       width:100%;
@@ -183,34 +176,100 @@
     .modalText{padding:10px 6px 2px; color:var(--muted); line-height:1.7}
 
     /* Floating hearts */
-    .float{
-      position:fixed;
-      left:0; top:0;
-      pointer-events:none;
-      z-index:1;
-    }
-    .float span{
-      position:absolute;
-      animation: rise 6s linear forwards;
-      opacity:.9;
-    }
-    @keyframes rise{
-      from{ transform: translateY(110vh); opacity:1 }
-      to{ transform: translateY(-15vh); opacity:0 }
-    }
+    .float{position:fixed; left:0; top:0; pointer-events:none; z-index:1;}
+    .float span{position:absolute; animation: rise 6s linear forwards; opacity:.92;}
+    @keyframes rise{from{ transform: translateY(110vh); opacity:1 } to{ transform: translateY(-15vh); opacity:0 }}
 
-    .tiny{font-size:13px; color:rgba(0,0,0,.55); margin-top:8px}
+    /* Slideshow */
+    .slideshow{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      margin-top:10px;
+    }
+    .slideshow img{
+      width:min(780px, 100%);
+      height:320px;
+      object-fit:cover;
+      border-radius:22px;
+      box-shadow:0 16px 36px rgba(0,0,0,.18);
+      background:#f3f3f3;
+      transition: opacity .4s ease;
+    }
+    .navBtn{
+      border:none;
+      width:48px; height:48px;
+      border-radius:999px;
+      background:#111;
+      color:#fff;
+      font-size:26px;
+      cursor:pointer;
+      opacity:.92;
+    }
+    .navBtn:hover{transform: scale(1.04)}
+
+    /* Travel cards */
+    .travelGrid{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:12px;
+      margin-top:12px;
+    }
+    @media (max-width: 920px){
+      .travelGrid{grid-template-columns: repeat(2, minmax(0, 1fr));}
+    }
+    @media (max-width: 560px){
+      .travelGrid{grid-template-columns: 1fr;}
+    }
+    .travelCard{
+      background:#fff;
+      border:1px solid rgba(0,0,0,.06);
+      border-radius:22px;
+      padding:12px;
+      box-shadow:0 12px 26px rgba(0,0,0,.10);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .travelCard img{
+      width:100%;
+      height:160px;
+      object-fit:cover;
+      border-radius:18px;
+      background:#f3f3f3;
+      cursor:pointer;
+    }
+    .travelTitle{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .travelTitle b{font-size:16px}
+    .tag{
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      background: rgba(124, 58, 237, .12);
+      color: #4c1d95;
+      font-weight:700;
+      white-space:nowrap;
+    }
+    .travelDesc{color:var(--muted); line-height:1.55; font-size:14px}
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <div class="hero">
       <div class="top">
         <div class="title">
-          <h1>Hi Amarjargal 💘</h1>
+          <h1>Сайн уу Амаржаргал 💘</h1>
           <p class="subtitle">
-            I made this little page so we can travel back through our moments — from <b>September</b> until now.
-            (And yes… there’s also a very important story about a “cockroach incident” 😭)
+            Би энэ жижиг хуудсыг <b>есдүгээр сараас</b> эхлээд өнөөдрийг хүртэл бидний мөчүүдээр “аялуулах” гэж хийлээ.
+            Мөн хамгийн чухал нэг түүх байна… <b>жоомны түүх</b> 😭🪳😂
           </p>
         </div>
 
@@ -222,39 +281,88 @@
       </div>
 
       <div class="pillRow">
-        <button class="pill" onclick="startJourney()">Start the time travel ✨</button>
-        <button class="pill soft" onclick="showCourageNote()">A small courage note 💜</button>
-        <button class="pill secondary" onclick="cockroachStory()">The cockroach story 🪳😂</button>
+        <button class="pill" onclick="startJourney()">Time travel эхлүүлье ✨</button>
+        <button class="pill soft" onclick="showCourageNote()">Чамд зориулсан зориг 💜</button>
+        <button class="pill secondary" onclick="cockroachStory()">Жоомны түүх 🪳😂</button>
       </div>
 
       <div id="heroNote" class="note" style="display:none;"></div>
-      <div class="tiny">Tip: tap any timeline image to open it bigger.</div>
+      <div class="tiny">Tip: ямар ч зураг дээр дарвал томоор нээгдэнэ ✨</div>
     </div>
 
-    <div class="section" id="timelineSection">
-      <h2>📖 Our little timeline</h2>
+    <!-- MUSIC -->
+    <div class="section">
+      <h2>🎵 Our background song</h2>
+      <p>Play дарахад л болно — browser автоматаар тоглуулахыг хаадаг болохоор ингэж хийх нь зөв арга 😊</p>
+
+      <div class="pillRow">
+        <button class="pill" onclick="toggleMusic()">Play / Pause 🎶</button>
+        <button class="pill soft" onclick="music.volume=Math.min(1, music.volume+0.1); updateMusicStatus()">Volume +</button>
+        <button class="pill secondary" onclick="music.volume=Math.max(0, music.volume-0.1); updateMusicStatus()">Volume -</button>
+      </div>
+
+      <div class="note" id="musicStatus">Music is paused 🙂</div>
+
+      <audio id="bgm" loop>
+        <source src="music.mp3" type="audio/mpeg">
+      </audio>
+    </div>
+
+    <!-- SLIDESHOW + GIF -->
+    <div class="section">
+      <h2>🖼️ Mini photo slideshow</h2>
+      <p>Зарим мөчүүдийг дахин дахин үзмээр байдаг шүү 😌</p>
+
+      <div class="slideshow">
+        <button class="navBtn" onclick="prevSlide()" aria-label="Previous slide">‹</button>
+        <img id="slideImg" src="slide1.jpg" alt="Slideshow image">
+        <button class="navBtn" onclick="nextSlide()" aria-label="Next slide">›</button>
+      </div>
+      <div class="tiny" id="slideCaption">Slide 1</div>
+
+      <div style="margin-top:12px;">
+        <img src="roach.gif" alt="Funny gif" style="max-width:170px; border-radius:18px; display:none;" id="roachGif">
+        <div class="tiny">P.S. Тийм ээ, GIF ажиллана 😭🪳</div>
+        <button class="pill secondary" onclick="toggleGif()">Show/Hide cockroach gif 🪳😂</button>
+      </div>
+    </div>
+
+    <!-- TRAVEL PICKER -->
+    <div class="section" id="travelSection">
+      <h2>🧳 Where should we travel?</h2>
       <p>
-        This is our “memory path.” I tried to capture how things slowly became more special — one step at a time.
+        Хэрвээ нэг өдөр хамт аялбал… аль хот руу явмаар байна? 💘
+        <br/>Choose one — би тэрийг “Next chapter” дээр нэмээд бичээд өгнө 😳✨
       </p>
 
+      <div class="travelGrid" id="travelGrid"></div>
+      <div id="travelChoice" class="note">Pick a city 💖</div>
+    </div>
+
+    <!-- TIMELINE -->
+    <div class="section" id="timelineSection">
+      <h2>📖 Our little timeline</h2>
+      <p>Есдүгээр сараас эхлээд өнөөдрийг хүртэл… нэг нэгээрээ 💗</p>
       <div class="timeline" id="timeline"></div>
     </div>
 
+    <!-- COURAGE NOTES -->
     <div class="section">
       <h2>📝 Notes for you</h2>
-      <p>These are tiny reminders — for the days you need extra courage.</p>
+      <p>Хэцүү өдөрт чинь жижигхэн зориг өгөх үгс 💜</p>
       <div class="pillRow">
-        <button class="pill" onclick="randomNote()">Give me one note 🌷</button>
-        <button class="pill soft" onclick="allNotes()">Show all notes 📚</button>
+        <button class="pill" onclick="randomNote()">Нэг note өгөөч 🌷</button>
+        <button class="pill soft" onclick="allNotes()">Бүгдийг нь үзье 📚</button>
       </div>
       <div id="notesBox" class="note">Click a button above 💖</div>
     </div>
 
+    <!-- NEXT CHAPTER -->
     <div class="section">
       <h2>🌸 Next chapter?</h2>
       <p>
-        If you’re up for it… I’d love to make a new memory with you.
-        Maybe <b>coffee</b> ☕ or a small walk, and we can add it to this timeline.
+        Хэрвээ боломжтой бол… шинэ дурсамж хийе ☕✨
+        (Тэгээд энэ веб дээр “шинэ зураг” нэмнэ 😌)
       </p>
       <div class="pillRow">
         <button class="pill" onclick="nextChapterYes()">If you say yes… 😳</button>
@@ -264,14 +372,14 @@
     </div>
   </div>
 
-  <!-- Image Modal -->
+  <!-- IMAGE MODAL -->
   <div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Image preview">
     <div class="modalCard">
       <div class="modalTop">
         <b id="modalTitle">Memory</b>
         <button class="x" onclick="closeModal()" aria-label="Close">✕</button>
       </div>
-      <img id="modalImg" class="modalImg" alt="Memory image"/>
+      <img id="modalImg" class="modalImg" alt="Preview"/>
       <div id="modalText" class="modalText"></div>
     </div>
   </div>
@@ -279,26 +387,46 @@
   <div class="float" id="float"></div>
 
   <script>
-    // ===== Customize your timeline here =====
-    // Replace captions with your real moments + inside jokes.
+    // ========= DATA YOU CAN EDIT =========
+
+    // Timeline (edit titles/text to your real memories)
     const EVENTS = [
-      { month: "September", img: "sep.jpg", title: "We met 🌱", text: "The start. I didn’t know then you’d become someone I look forward to seeing." },
-      { month: "October",    img: "oct.jpg", title: "More conversations ✨", text: "Somehow talking with you felt easy… and I started smiling more." },
-      { month: "November",   img: "nov.jpg", title: "Inside jokes begin 😄", text: "This is where our little jokes started to feel like “our thing.”" },
-      { month: "December",   img: "dec.jpg", title: "Warm moments ❄️", text: "Even when it’s cold, you made things feel warm." },
-      { month: "January",    img: "jan.jpg", title: "I realized something 💭", text: "I kept catching myself thinking about you at random times." },
-      { month: "Now",        img: "now.jpg", title: "Today 💘", text: "Still here. Still grateful. Still a little nervous writing this." }
+      { month: "September", img: "sep.jpg", title: "Бид танилцсан 🌱", text: "Тэр үеэс хойш миний өдрүүд өөр болж эхэлсэн." },
+      { month: "October",    img: "oct.jpg", title: "Илүү олон яриа ✨", text: "Чамтай ярилцахад нэг л амархан… тэгээд би их инээдэг болсон." },
+      { month: "November",   img: "nov.jpg", title: "Дотоод онигоо эхэлсэн 😄", text: "Манай жижиг хошигнолууд “бидний юм” болоод гоё санагдсан." },
+      { month: "December",   img: "dec.jpg", title: "Дулаан мөчүүд ❄️", text: "Хүйтэн байсан ч чи дулаахан мэдрэмж өгсөн." },
+      { month: "January",    img: "jan.jpg", title: "Нэг зүйл ойлгосон 💭", text: "Санамсаргүй үед чамайг боддог болсон." },
+      { month: "Now",        img: "now.jpg", title: "Өнөөдөр 💘", text: "Одоо ч гэсэн… баярлалаа гэж хэлмээр байна. Бас жаахан сандарч байна 😳" }
     ];
 
+    // Courage notes
     const COURAGE_NOTES = [
-      "You don’t have to be perfect to be amazing.",
-      "Your effort matters. I see it.",
-      "When you doubt yourself, remember you’ve already made it through so much.",
-      "You bring a calm kind of strength.",
-      "You deserve good things — not later, but now.",
-      "If today is hard, you don’t have to carry it alone."
+      "Чи өөрийгөө бодсоноосоо илүү хүчтэй.",
+      "Чи хангалттай сайн.",
+      "Чиний хичээл зүтгэл үнэхээр гайхалтай.",
+      "Алдаа гаргасан ч чи үнэ цэнэтэй хэвээр.",
+      "Өнөөдөр хэцүү байвал ганцаараа үүрэх хэрэггүй.",
+      "Чи хүмүүсийн өдрийг гэрэлтэй болгодог."
     ];
 
+    // Slideshow
+    const slides = [
+      {src:"slide1.jpg", cap:"Slide 1 — (энд тайлбар бичээрэй)"},
+      {src:"slide2.jpg", cap:"Slide 2 — (энд тайлбар бичээрэй)"},
+      {src:"slide3.jpg", cap:"Slide 3 — (энд тайлбар бичээрэй)"}
+    ];
+
+    // Travel choices (China cities + Seoul + Bangkok)
+    const TRAVELS = [
+      { id:"beijing",  country:"China",  tag:"History",     city:"Beijing",   img:"beijing.jpg",  text:"Great Wall + forbidden city vibes 🏯" },
+      { id:"shanghai", country:"China",  tag:"City lights", city:"Shanghai",  img:"shanghai.jpg", text:"Skylines, night walk, cute photos 🌃" },
+      { id:"chengdu",  country:"China",  tag:"Chill",       city:"Chengdu",   img:"chengdu.jpg",  text:"Pandas + spicy food + slow days 🐼🌶️" },
+      { id:"hangzhou", country:"China",  tag:"Romantic",    city:"Hangzhou",  img:"hangzhou.jpg", text:"West Lake + calm, dreamy 느낌 🌿" },
+      { id:"seoul",    country:"Korea",  tag:"K-vibe",      city:"Seoul",     img:"seoul.jpg",    text:"Cafés + night views + shopping 😌✨" },
+      { id:"bangkok",  country:"Thailand", tag:"Fun",       city:"Bangkok",   img:"bangkok.jpg",  text:"Street food + temples + chaos-but-fun 🌈" }
+    ];
+
+    // ========= ELEMENTS =========
     const timelineEl = document.getElementById("timeline");
     const modal = document.getElementById("modal");
     const modalImg = document.getElementById("modalImg");
@@ -306,93 +434,27 @@
     const modalText = document.getElementById("modalText");
     const float = document.getElementById("float");
 
-    function renderTimeline(){
-      timelineEl.innerHTML = "";
-      EVENTS.forEach((e, idx) => {
-        const card = document.createElement("div");
-        card.className = "event";
-        card.innerHTML = `
-          <img src="${e.img}" alt="${e.month} memory" data-idx="${idx}" />
-          <div class="meta">
-            <b>${e.month} — ${e.title}</b>
-            <div>${e.text}</div>
-          </div>
-          <button class="pill soft" style="padding:10px 12px" onclick="openModal(${idx})">Open</button>
-        `;
-        timelineEl.appendChild(card);
-      });
+    // Music
+    const music = document.getElementById("bgm");
+    const musicStatus = document.getElementById("musicStatus");
 
-      // Allow clicking the image too
-      timelineEl.querySelectorAll("img").forEach(img => {
-        img.addEventListener("click", () => openModal(Number(img.dataset.idx)));
-      });
-    }
+    // Slideshow
+    let slideIndex = 0;
+    const slideImg = document.getElementById("slideImg");
+    const slideCaption = document.getElementById("slideCaption");
 
-    function openModal(idx){
-      const e = EVENTS[idx];
-      modalTitle.textContent = `${e.month} — ${e.title}`;
-      modalImg.src = e.img;
-      modalImg.alt = `${e.month} memory`;
-      modalText.textContent = e.text;
-      modal.classList.add("open");
-      popHearts(8);
-    }
+    // Travel
+    const travelGrid = document.getElementById("travelGrid");
+    const travelChoice = document.getElementById("travelChoice");
+    let chosenTravelId = null;
 
-    function closeModal(){ modal.classList.remove("open"); }
-    modal.addEventListener("click", (ev) => { if(ev.target === modal) closeModal(); });
-
-    // Hero buttons
-    function startJourney(){
-      document.getElementById("timelineSection").scrollIntoView({behavior:"smooth"});
-      popHearts(16);
-      showHero("Okay 😳 Let’s go back… step by step. Thanks for being part of my days, Amarjargal 💖");
-    }
-
-    function showCourageNote(){
-      const n = COURAGE_NOTES[Math.floor(Math.random()*COURAGE_NOTES.length)];
-      popHearts(10);
-      showHero("Courage note for you: “" + n + "”");
-    }
-
-    function cockroachStory(){
-      // Cute + funny without being scary
-      popHearts(14);
-      showHero("Important announcement 🪳😂: I’m still afraid of cockroaches… and you are VERY talented at scaring me 😭 But honestly? Even that became a memory I laugh about. (Please be nice to my heart 😌)");
-    }
-
+    // ========= HELPERS =========
     function showHero(text){
       const box = document.getElementById("heroNote");
       box.style.display = "block";
       box.textContent = text;
     }
 
-    // Notes section
-    function randomNote(){
-      const n = COURAGE_NOTES[Math.floor(Math.random()*COURAGE_NOTES.length)];
-      document.getElementById("notesBox").textContent = "💜 " + n;
-      popHearts(8);
-    }
-    function allNotes(){
-      document.getElementById("notesBox").innerHTML =
-        "💖 " + COURAGE_NOTES.map(x => "• " + x).join("<br/>");
-      popHearts(10);
-    }
-
-    // Next chapter
-    function nextChapterYes(){
-      const box = document.getElementById("nextBox");
-      box.style.display = "block";
-      box.textContent = "Okay… you just made me VERY happy 😭💖 Tell me a day/time that works for you, and I’ll be there ☕✨";
-      popHearts(18);
-    }
-    function nextChapterNo(){
-      const box = document.getElementById("nextBox");
-      box.style.display = "block";
-      box.textContent = "That’s okay 😊 I still wanted you to know you’re special to me. Thank you for reading this.";
-      popHearts(10);
-    }
-
-    // Floating hearts
     function popHearts(count){
       for(let i=0;i<count;i++){
         const s = document.createElement("span");
@@ -405,8 +467,196 @@
       }
     }
 
+    // ========= MODAL =========
+    function openModal(title, img, text){
+      modalTitle.textContent = title;
+      modalImg.src = img;
+      modalImg.alt = title;
+      modalText.textContent = text || "";
+      modal.classList.add("open");
+      popHearts(8);
+    }
+    function closeModal(){ modal.classList.remove("open"); }
+    modal.addEventListener("click", (ev) => { if(ev.target === modal) closeModal(); });
+
+    // ========= TIMELINE =========
+    function renderTimeline(){
+      timelineEl.innerHTML = "";
+      EVENTS.forEach((e) => {
+        const card = document.createElement("div");
+        card.className = "event reveal";
+        card.innerHTML = `
+          <img src="${e.img}" alt="${e.month} memory" />
+          <div class="meta">
+            <b>${e.month} — ${e.title}</b>
+            <div>${e.text}</div>
+          </div>
+          <button class="pill soft" style="padding:10px 12px" type="button">Open</button>
+        `;
+        const imgEl = card.querySelector("img");
+        const btnEl = card.querySelector("button");
+        imgEl.addEventListener("click", () => openModal(`${e.month} — ${e.title}`, e.img, e.text));
+        btnEl.addEventListener("click", () => openModal(`${e.month} — ${e.title}`, e.img, e.text));
+        timelineEl.appendChild(card);
+      });
+
+      setupReveal();
+    }
+
+    function setupReveal(){
+      const items = document.querySelectorAll(".reveal");
+      const obs = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting) e.target.classList.add("show");
+        });
+      }, { threshold: 0.15 });
+      items.forEach(i => obs.observe(i));
+    }
+
+    // ========= HERO BUTTONS =========
+    function startJourney(){
+      document.getElementById("timelineSection").scrollIntoView({behavior:"smooth"});
+      popHearts(16);
+      showHero("За 😳✨ нэг нэгээр нь буцаад аялъя. Чи миний өдрийг илүү онцгой болгосон шүү 💖");
+    }
+
+    function showCourageNote(){
+      const n = COURAGE_NOTES[Math.floor(Math.random()*COURAGE_NOTES.length)];
+      popHearts(10);
+      showHero("Чамд зориулсан зориг: “" + n + "” 💜");
+    }
+
+    function cockroachStory(){
+      popHearts(14);
+      const travelBit = chosenTravelId ? `Дараа нь хамт ${getTravelName(chosenTravelId)} руу явбал… намайг жоомоор бүү айлгаарай 😭🪳` : "Намайг жоомоор бүү айлгаарай 😭🪳";
+      showHero("Маш чухал мэдэгдэл 🪳😂: Би жоомноос айдаг… харин чи намайг айлгахдаа үнэхээр мундаг 😭 Гэхдээ одоо бодоход инээдтэй дурсамж болсон. " + travelBit);
+    }
+
+    // ========= COURAGE NOTES =========
+    function randomNote(){
+      const n = COURAGE_NOTES[Math.floor(Math.random()*COURAGE_NOTES.length)];
+      document.getElementById("notesBox").textContent = "💜 " + n;
+      popHearts(8);
+    }
+    function allNotes(){
+      document.getElementById("notesBox").innerHTML =
+        "💖 " + COURAGE_NOTES.map(x => "• " + x).join("<br/>");
+      popHearts(10);
+    }
+
+    // ========= NEXT CHAPTER =========
+    function nextChapterYes(){
+      const box = document.getElementById("nextBox");
+      box.style.display = "block";
+      const chosen = chosenTravelId ? ` Бидний аялал: ${getTravelName(chosenTravelId)} 🧳💘` : "";
+      box.textContent = "За тэгвэл… чи намайг маш их баярлууллаа 😭💖 Хэзээ завтай вэ? Би кофе/алхалтанд бэлэн ☕✨" + chosen;
+      popHearts(18);
+    }
+    function nextChapterNo(){
+      const box = document.getElementById("nextBox");
+      box.style.display = "block";
+      box.textContent = "Зүгээр ээ 😊 Би зүгээр л чамд хэлмээр байсан: чи надад онцгой. Үүнийг уншсанд баярлалаа 💖";
+      popHearts(10);
+    }
+
+    // ========= MUSIC =========
+    function updateMusicStatus(){
+      const vol = Math.round((music.volume || 0) * 100);
+      if(music.paused){
+        musicStatus.textContent = `Music is paused 🙂 (volume ${vol}%)`;
+      } else {
+        musicStatus.textContent = `Music is playing 💘🎶 (volume ${vol}%)`;
+      }
+    }
+    function toggleMusic(){
+      if(music.paused){
+        music.play().then(()=> {
+          updateMusicStatus();
+          popHearts(10);
+        }).catch(() => {
+          musicStatus.textContent = "Autoplay blocked 🙂 Tap Play again.";
+        });
+      } else {
+        music.pause();
+        updateMusicStatus();
+      }
+    }
+
+    // ========= SLIDESHOW =========
+    function renderSlide(){
+      slideImg.style.opacity = 0;
+      setTimeout(()=>{
+        slideImg.src = slides[slideIndex].src;
+        slideCaption.textContent = slides[slideIndex].cap;
+        slideImg.style.opacity = 1;
+      }, 200);
+    }
+    function nextSlide(){ slideIndex = (slideIndex+1) % slides.length; renderSlide(); popHearts(4); }
+    function prevSlide(){ slideIndex = (slideIndex-1+slides.length) % slides.length; renderSlide(); popHearts(4); }
+    setInterval(nextSlide, 4500);
+
+    // GIF toggle
+    function toggleGif(){
+      const g = document.getElementById("roachGif");
+      const isHidden = (g.style.display === "none" || !g.style.display);
+      g.style.display = isHidden ? "block" : "none";
+      if(isHidden){
+        showHero("⚠️ WARNING: cockroach mode activated 🪳😂 (тайван шүү — энэ бол GIF л дээ 😭)");
+        popHearts(10);
+      }
+    }
+
+    // ========= TRAVEL PICKER =========
+    function renderTravels(){
+      travelGrid.innerHTML = "";
+      TRAVELS.forEach(t => {
+        const el = document.createElement("div");
+        el.className = "travelCard reveal";
+        el.innerHTML = `
+          <img src="${t.img}" alt="${t.city}" />
+          <div class="travelTitle">
+            <b>${t.city}</b>
+            <span class="tag">${t.country} • ${t.tag}</span>
+          </div>
+          <div class="travelDesc">${t.text}</div>
+          <div class="pillRow" style="margin-top:2px;">
+            <button class="pill soft" type="button">Choose 💘</button>
+            <button class="pill secondary" type="button">Open 🖼️</button>
+          </div>
+        `;
+
+        const imgEl = el.querySelector("img");
+        const btnChoose = el.querySelectorAll("button")[0];
+        const btnOpen = el.querySelectorAll("button")[1];
+
+        imgEl.addEventListener("click", ()=> openModal(`${t.city} ✨`, t.img, t.text));
+        btnOpen.addEventListener("click", ()=> openModal(`${t.city} ✨`, t.img, t.text));
+        btnChoose.addEventListener("click", ()=> chooseTravel(t.id));
+
+        travelGrid.appendChild(el);
+      });
+
+      setupReveal();
+    }
+
+    function getTravelName(id){
+      const t = TRAVELS.find(x => x.id === id);
+      return t ? `${t.city}` : "that city";
+    }
+
+    function chooseTravel(id){
+      chosenTravelId = id;
+      const t = TRAVELS.find(x => x.id === id);
+      if(!t) return;
+      travelChoice.textContent = `Chosen: ${t.city} 💘 — ${t.text}`;
+      popHearts(14);
+      showHero(`За 😳✨ тэгвэл нэг өдөр… ${t.city} руу хамт аялъя гэж бодъё. (Би энэ хэсгийг бүр илүү гоё болгоно!)`);
+    }
+
+    // ========= INIT =========
     renderTimeline();
-    // a few hearts at load
+    renderTravels();
+    renderSlide();
     setTimeout(()=>popHearts(6), 500);
   </script>
 </body>
