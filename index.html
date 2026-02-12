@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>For Amarjargal 💘</title>
+  <style>
+    :root{
+      --bg1:#ff9a9e;
+      --bg2:#fad0c4;
+      --card:#ffffffdd;
+      --text:#222;
+      --muted:#555;
+      --accent:#ff4d6d;
+      --accent2:#7c3aed;
+      --shadow: 0 18px 45px rgba(0,0,0,.18);
+      --radius:26px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+    .wrap{max-width:980px; margin:0 auto; padding:26px 18px 70px;}
+    .hero{
+      background:var(--card);
+      backdrop-filter: blur(10px);
+      border:1px solid #fff;
+      box-shadow:var(--shadow);
+      border-radius:var(--radius);
+      padding:22px;
+      overflow:hidden;
+      position:relative;
+    }
+    .top{
+      display:flex;
+      gap:18px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .title{
+      flex:1;
+      min-width:260px;
+    }
+    h1{margin:0 0 8px; font-size:34px; letter-spacing:.2px}
+    .subtitle{margin:0; color:var(--muted); font-size:16px; line-height:1.5}
+    .avatars{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .avatar{
+      width:92px; height:92px;
+      border-radius:999px;
+      border:3px solid #fff;
+      box-shadow:0 12px 28px rgba(0,0,0,.15);
+      object-fit:cover;
+      background:#fff;
+    }
+    .heartBadge{
+      width:44px; height:44px;
+      border-radius:999px;
+      background:var(--accent);
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:22px;
+      box-shadow:0 12px 28px rgba(0,0,0,.15);
+      user-select:none;
+    }
+
+    .section{
+      margin-top:18px;
+      background:var(--card);
+      border:1px solid #fff;
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow: 0 14px 34px rgba(0,0,0,.12);
+    }
+    .section h2{
+      margin:0 0 10px;
+      font-size:20px;
+      letter-spacing:.2px;
+    }
+    .section p{margin:10px 0; line-height:1.7}
+    .pillRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
+    .pill{
+      border:none;
+      padding:11px 14px;
+      border-radius:999px;
+      background:var(--accent);
+      color:#fff;
+      font-weight:700;
+      cursor:pointer;
+      transition:.2s;
+    }
+    .pill.secondary{background: #111; opacity:.9}
+    .pill.soft{background: var(--accent2)}
+    .pill:hover{transform: translateY(-1px) scale(1.02)}
+    .note{
+      margin-top:10px;
+      padding:12px 14px;
+      border-radius:18px;
+      background:#fff;
+      border:1px solid rgba(0,0,0,.06);
+      color:var(--muted);
+    }
+
+    /* Timeline */
+    .timeline{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:12px;
+      margin-top:10px;
+    }
+    .event{
+      display:flex;
+      gap:14px;
+      padding:14px;
+      border-radius:22px;
+      background:#fff;
+      border:1px solid rgba(0,0,0,.06);
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .event img{
+      width:140px; height:96px;
+      object-fit:cover;
+      border-radius:18px;
+      box-shadow:0 10px 22px rgba(0,0,0,.12);
+      background:#f3f3f3;
+    }
+    .event .meta{
+      flex:1;
+      min-width:220px;
+    }
+    .event .meta b{font-size:16px}
+    .event .meta div{color:var(--muted); margin-top:4px; line-height:1.5}
+
+    /* Modal */
+    .modal{
+      position:fixed; inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      background: rgba(0,0,0,.35);
+      z-index:50;
+    }
+    .modal.open{display:flex}
+    .modalCard{
+      width:min(720px, 100%);
+      background:#fff;
+      border-radius:26px;
+      padding:16px;
+      box-shadow:0 18px 60px rgba(0,0,0,.35);
+    }
+    .modalTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:6px 6px 12px;
+    }
+    .x{
+      border:none; background:#111; color:#fff;
+      border-radius:999px; width:38px; height:38px;
+      cursor:pointer;
+      font-size:18px;
+    }
+    .modalImg{
+      width:100%;
+      max-height:56vh;
+      object-fit:cover;
+      border-radius:20px;
+      background:#f3f3f3;
+    }
+    .modalText{padding:10px 6px 2px; color:var(--muted); line-height:1.7}
+
+    /* Floating hearts */
+    .float{
+      position:fixed;
+      left:0; top:0;
+      pointer-events:none;
+      z-index:1;
+    }
+    .float span{
+      position:absolute;
+      animation: rise 6s linear forwards;
+      opacity:.9;
+    }
+    @keyframes rise{
+      from{ transform: translateY(110vh); opacity:1 }
+      to{ transform: translateY(-15vh); opacity:0 }
+    }
+
+    .tiny{font-size:13px; color:rgba(0,0,0,.55); margin-top:8px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <div class="top">
+        <div class="title">
+          <h1>Hi Amarjargal 💘</h1>
+          <p class="subtitle">
+            I made this little page so we can travel back through our moments — from <b>September</b> until now.
+            (And yes… there’s also a very important story about a “cockroach incident” 😭)
+          </p>
+        </div>
+
+        <div class="avatars" aria-label="Our photos">
+          <img class="avatar" src="me.jpg" alt="My photo">
+          <div class="heartBadge" title="us">💞</div>
+          <img class="avatar" src="amar.jpg" alt="Amarjargal photo">
+        </div>
+      </div>
+
+      <div class="pillRow">
+        <button class="pill" onclick="startJourney()">Start the time travel ✨</button>
+        <button class="pill soft" onclick="showCourageNote()">A small courage note 💜</button>
+        <button class="pill secondary" onclick="cockroachStory()">The cockroach story 🪳😂</button>
+      </div>
+
+      <div id="heroNote" class="note" style="display:none;"></div>
+      <div class="tiny">Tip: tap any timeline image to open it bigger.</div>
+    </div>
+
+    <div class="section" id="timelineSection">
+      <h2>📖 Our little timeline</h2>
+      <p>
+        This is our “memory path.” I tried to capture how things slowly became more special — one step at a time.
+      </p>
+
+      <div class="timeline" id="timeline"></div>
+    </div>
+
+    <div class="section">
+      <h2>📝 Notes for you</h2>
+      <p>These are tiny reminders — for the days you need extra courage.</p>
+      <div class="pillRow">
+        <button class="pill" onclick="randomNote()">Give me one note 🌷</button>
+        <button class="pill soft" onclick="allNotes()">Show all notes 📚</button>
+      </div>
+      <div id="notesBox" class="note">Click a button above 💖</div>
+    </div>
+
+    <div class="section">
+      <h2>🌸 Next chapter?</h2>
+      <p>
+        If you’re up for it… I’d love to make a new memory with you.
+        Maybe <b>coffee</b> ☕ or a small walk, and we can add it to this timeline.
+      </p>
+      <div class="pillRow">
+        <button class="pill" onclick="nextChapterYes()">If you say yes… 😳</button>
+        <button class="pill secondary" onclick="nextChapterNo()">If you say no… 🙈</button>
+      </div>
+      <div id="nextBox" class="note" style="display:none;"></div>
+    </div>
+  </div>
+
+  <!-- Image Modal -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Image preview">
+    <div class="modalCard">
+      <div class="modalTop">
+        <b id="modalTitle">Memory</b>
+        <button class="x" onclick="closeModal()" aria-label="Close">✕</button>
+      </div>
+      <img id="modalImg" class="modalImg" alt="Memory image"/>
+      <div id="modalText" class="modalText"></div>
+    </div>
+  </div>
+
+  <div class="float" id="float"></div>
+
+  <script>
+    // ===== Customize your timeline here =====
+    // Replace captions with your real moments + inside jokes.
+    const EVENTS = [
+      { month: "September", img: "sep.jpg", title: "We met 🌱", text: "The start. I didn’t know then you’d become someone I look forward to seeing." },
+      { month: "October",    img: "oct.jpg", title: "More conversations ✨", text: "Somehow talking with you felt easy… and I started smiling more." },
+      { month: "November",   img: "nov.jpg", title: "Inside jokes begin 😄", text: "This is where our little jokes started to feel like “our thing.”" },
+      { month: "December",   img: "dec.jpg", title: "Warm moments ❄️", text: "Even when it’s cold, you made things feel warm." },
+      { month: "January",    img: "jan.jpg", title: "I realized something 💭", text: "I kept catching myself thinking about you at random times." },
+      { month: "Now",        img: "now.jpg", title: "Today 💘", text: "Still here. Still grateful. Still a little nervous writing this." }
+    ];
+
+    const COURAGE_NOTES = [
+      "You don’t have to be perfect to be amazing.",
+      "Your effort matters. I see it.",
+      "When you doubt yourself, remember you’ve already made it through so much.",
+      "You bring a calm kind of strength.",
+      "You deserve good things — not later, but now.",
+      "If today is hard, you don’t have to carry it alone."
+    ];
+
+    const timelineEl = document.getElementById("timeline");
+    const modal = document.getElementById("modal");
+    const modalImg = document.getElementById("modalImg");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalText = document.getElementById("modalText");
+    const float = document.getElementById("float");
+
+    function renderTimeline(){
+      timelineEl.innerHTML = "";
+      EVENTS.forEach((e, idx) => {
+        const card = document.createElement("div");
+        card.className = "event";
+        card.innerHTML = `
+          <img src="${e.img}" alt="${e.month} memory" data-idx="${idx}" />
+          <div class="meta">
+            <b>${e.month} — ${e.title}</b>
+            <div>${e.text}</div>
+          </div>
+          <button class="pill soft" style="padding:10px 12px" onclick="openModal(${idx})">Open</button>
+        `;
+        timelineEl.appendChild(card);
+      });
+
+      // Allow clicking the image too
+      timelineEl.querySelectorAll("img").forEach(img => {
+        img.addEventListener("click", () => openModal(Number(img.dataset.idx)));
+      });
+    }
+
+    function openModal(idx){
+      const e = EVENTS[idx];
+      modalTitle.textContent = `${e.month} — ${e.title}`;
+      modalImg.src = e.img;
+      modalImg.alt = `${e.month} memory`;
+      modalText.textContent = e.text;
+      modal.classList.add("open");
+      popHearts(8);
+    }
+
+    function closeModal(){ modal.classList.remove("open"); }
+    modal.addEventListener("click", (ev) => { if(ev.target === modal) closeModal(); });
+
+    // Hero buttons
+    function startJourney(){
+      document.getElementById("timelineSection").scrollIntoView({behavior:"smooth"});
+      popHearts(16);
+      showHero("Okay 😳 Let’s go back… step by step. Thanks for being part of my days, Amarjargal 💖");
+    }
+
+    function showCourageNote(){
+      const n = COURAGE_NOTES[Math.floor(Math.random()*COURAGE_NOTES.length)];
+      popHearts(10);
+      showHero("Courage note for you: “" + n + "”");
+    }
+
+    function cockroachStory(){
+      // Cute + funny without being scary
+      popHearts(14);
+      showHero("Important announcement 🪳😂: I’m still afraid of cockroaches… and you are VERY talented at scaring me 😭 But honestly? Even that became a memory I laugh about. (Please be nice to my heart 😌)");
+    }
+
+    function showHero(text){
+      const box = document.getElementById("heroNote");
+      box.style.display = "block";
+      box.textContent = text;
+    }
+
+    // Notes section
+    function randomNote(){
+      const n = COURAGE_NOTES[Math.floor(Math.random()*COURAGE_NOTES.length)];
+      document.getElementById("notesBox").textContent = "💜 " + n;
+      popHearts(8);
+    }
+    function allNotes(){
+      document.getElementById("notesBox").innerHTML =
+        "💖 " + COURAGE_NOTES.map(x => "• " + x).join("<br/>");
+      popHearts(10);
+    }
+
+    // Next chapter
+    function nextChapterYes(){
+      const box = document.getElementById("nextBox");
+      box.style.display = "block";
+      box.textContent = "Okay… you just made me VERY happy 😭💖 Tell me a day/time that works for you, and I’ll be there ☕✨";
+      popHearts(18);
+    }
+    function nextChapterNo(){
+      const box = document.getElementById("nextBox");
+      box.style.display = "block";
+      box.textContent = "That’s okay 😊 I still wanted you to know you’re special to me. Thank you for reading this.";
+      popHearts(10);
+    }
+
+    // Floating hearts
+    function popHearts(count){
+      for(let i=0;i<count;i++){
+        const s = document.createElement("span");
+        s.textContent = ["💗","💖","💘","💞"][Math.floor(Math.random()*4)];
+        s.style.left = Math.random()*100 + "vw";
+        s.style.fontSize = (18 + Math.random()*22) + "px";
+        s.style.animationDuration = (4.5 + Math.random()*2.5) + "s";
+        float.appendChild(s);
+        setTimeout(() => s.remove(), 7000);
+      }
+    }
+
+    renderTimeline();
+    // a few hearts at load
+    setTimeout(()=>popHearts(6), 500);
+  </script>
+</body>
+</html>
