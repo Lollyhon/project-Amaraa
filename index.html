@@ -269,7 +269,7 @@
           <h1>Зөвхөн Амараад зориулав 💘</h1>
           <p class="subtitle">
             Энэ website-ыг <b>зөвхөн чамд</b>........
-            Мөн намайг <b>жоомоор</b> айлгахгүй байхыг хүсье 😭🪳😂
+            Ойрд яагаад чат бичихгүй байна аа гэж бодсон уу? Тэгвэл хариулт нь энд байна✨✨✨
           </p>
         </div>
 
@@ -304,8 +304,8 @@
 
       <div style="margin-top:12px;">
         <img src="roach.gif" alt="Funny gif" style="max-width:170px; border-radius:18px; display:none;" id="roachGif">
-        <div class="tiny">P.S. Тийм ээ, GIF ажиллана 😭🪳</div>
-        <button class="pill secondary" onclick="toggleGif()">Show/Hide cockroach gif 🪳😂</button>
+        <div class="tiny">P.S. Энэ ч ёстой аймаааар зураг шүү 😭🪳</div>
+        <button class="pill secondary" onclick="toggleGif()">Show/Hide cockroach 🪳😂</button>
       </div>
     </div>
 
@@ -314,7 +314,7 @@
       <h2>🧳 Хаашаа явмаар байна?</h2>
       <p>
         Хамтдаа аялахад энэ дэлхий хэтэрхий жижигхэн юм 💘
-        <br/>Бүгийг нь сонгосон ч болно 😳✨
+        <br/>Бүгдийг нь сонгосон ч болно 😳✨
       </p>
 
       <div class="travelGrid" id="travelGrid"></div>
@@ -373,7 +373,7 @@
 
     // Timeline (edit titles/text to your real memories)
     const EVENTS = [
-      { month: "September", img: "sep.jpg", title: "Бид танилцсан 🌱", text: "Тэр үеэс хойш миний өдрүүд өөр болж эхэлсэн." },
+      { month: "September", img: "sep.jpg", title: "Анхны сэтгэгдэл 🌱", text: "Тэр үеэс хойш миний өдрүүд өөр болж эхэлсэн." },
       { month: "October",    img: "oct.jpg", title: "Илүү олон яриа ✨", text: "Чамтай ярилцахад нэг л амархан… тэгээд би их инээдэг болсон." },
       { month: "November",   img: "nov.jpg", title: "Дотоод онигоо эхэлсэн 😄", text: "Манай жижиг хошигнолууд “бидний юм” болоод гоё санагдсан." },
       { month: "December",   img: "dec.jpg", title: "Дулаан мөчүүд ❄️", text: "Хүйтэн байсан ч чи дулаахан мэдрэмж өгсөн." },
@@ -539,29 +539,6 @@
       box.style.display = "block";
       box.textContent = "Зүгээр ээ 😊 Би зүгээр л чамд хэлмээр байсан юм: you always make my day. Энэ хүртэл уншсанд баярлалаа 💖";
       popHearts(10);
-    }
-
-    // ========= MUSIC =========
-    function updateMusicStatus(){
-      const vol = Math.round((music.volume || 0) * 100);
-      if(music.paused){
-        musicStatus.textContent = `Хөгжим зогслоо 🙂 (volume ${vol}%)`;
-      } else {
-        musicStatus.textContent = `Хөгжим явж байна 💘🎶 (volume ${vol}%)`;
-      }
-    }
-    function toggleMusic(){
-      if(music.paused){
-        music.play().then(()=> {
-          updateMusicStatus();
-          popHearts(10);
-        }).catch(() => {
-          musicStatus.textContent = "Автомат тоглогч зогслоо 🙂 Дахин дарж тоглуулна уу.";
-        });
-      } else {
-        music.pause();
-        updateMusicStatus();
-      }
     }
 
     // ========= SLIDESHOW =========
