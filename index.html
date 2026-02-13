@@ -335,7 +335,7 @@
       </audio>
     </div>
 
-    <!-- SLIDESHOW + GIF -->
+    <!-- SLIDESHOW + JPG -->
     <div class="section">
       <h2>🖼️ Mini photo slideshow</h2>
       <p>Зарим мөчүүдийг дахин дахин үзмээр байдаг шүү 😌</p>
@@ -350,7 +350,7 @@
       <div style="margin-top:12px;">
         <img src="roach.jpg" alt="Funny jpg" style="max-width:170px; border-radius:18px; display:none;" id="roachjpg">
         <div class="tiny">P.S. Энэ ч ёстой аймаааар зураг шүү 😭🪳</div>
-        <button class="pill secondary" onclick="toggleGif()">Show/Hide cockroach 🪳😂</button>
+        <button class="pill secondary" onclick="togglejpg()">Show/Hide cockroach 🪳😂</button>
       </div>
     </div>
 
@@ -595,7 +595,7 @@
     function prevSlide(){ slideIndex = (slideIndex-1+slides.length) % slides.length; renderSlide(); popHearts(4); }
     setInterval(nextSlide, 4500);
 
-    // GIF toggle
+    // JPG toggle (roach)
     function togglejpg(){
       const g = document.getElementById("roachjpg");
       const isHidden = (g.style.display === "none" || !g.style.display);
