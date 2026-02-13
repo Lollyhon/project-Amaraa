@@ -258,6 +258,9 @@
       white-space:nowrap;
     }
     .travelDesc{color:var(--muted); line-height:1.55; font-size:14px}
+
+    /* Music section range styling */
+    #musicSection input[type="range"]{ accent-color: var(--accent); }
   </style>
 </head>
 
@@ -288,6 +291,48 @@
 
       <div id="heroNote" class="note" style="display:none;"></div>
       <div class="tiny">Жижигхэн зөвлөгөө: ямар ч зураг дээр дарвал томоор нээгдэнэ ✨</div>
+    </div>
+
+    <!-- MUSIC (Advanced) -->
+    <div class="section" id="musicSection">
+      <h2>🎵 Our song</h2>
+      <p>
+        Play дарж байж эхэлнэ 💘 (browser autoplay-г хаадаг болохоор).
+        Дуугаа асаагаад цаг хугацаагаар аялцгаая ✨
+      </p>
+
+      <div class="pillRow">
+        <button class="pill" id="playBtn" onclick="toggleMusic()">Play ▶</button>
+        <button class="pill soft" id="muteBtn" onclick="toggleMute()">Mute 🔇</button>
+        <button class="pill secondary" onclick="restartSong()">Restart ⟲</button>
+      </div>
+
+      <div class="note">
+        <div style="display:flex; justify-content:space-between; gap:10px; align-items:center; flex-wrap:wrap;">
+          <div>
+            <b id="songState">Paused 🙂</b>
+            <div class="tiny" id="timeLabel">00:00 / 00:00</div>
+          </div>
+
+          <div style="display:flex; gap:10px; align-items:center;">
+            <span class="tiny">Volume</span>
+            <input id="vol" type="range" min="0" max="1" step="0.01" value="0.7" style="width:170px;">
+          </div>
+        </div>
+
+        <div style="margin-top:12px;">
+          <input id="seek" type="range" min="0" max="1000" step="1" value="0" style="width:100%;">
+          <div class="tiny">Дуртай хэсэг рүүгээ чирээд очиж болно 😌</div>
+        </div>
+
+        <div class="tiny" style="margin-top:10px;">
+          💡 Tip: Page дээр хаана ч нэг удаа дарвал автоматаар тоглож эхэлдэг болгосон (өөрөөр хэлбэл: эхний “user interaction”).
+        </div>
+      </div>
+
+      <audio id="bgm" preload="metadata" loop>
+        <source src="music.mp3" type="audio/mpeg">
+      </audio>
     </div>
 
     <!-- SLIDESHOW + GIF -->
@@ -415,10 +460,6 @@
     const modalTitle = document.getElementById("modalTitle");
     const modalText = document.getElementById("modalText");
     const float = document.getElementById("float");
-
-    // Music
-    const music = document.getElementById("bgm");
-    const musicStatus = document.getElementById("musicStatus");
 
     // Slideshow
     let slideIndex = 0;
@@ -612,11 +653,174 @@
       showHero(`За 😳✨ тэгвэл нэг өдөр… ${t.city} руу хамт аялъя гэж бодъё. (Би энэ хэсгийг бүр илүү гоё болгоно!)`);
     }
 
+    // ========= ADVANCED MUSIC =========
+    const music = document.getElementById("bgm");
+    const playBtn = document.getElementById("playBtn");
+    const muteBtn = document.getElementById("muteBtn");
+    const vol = document.getElementById("vol");
+    const seek = document.getElementById("seek");
+    const songState = document.getElementById("songState");
+    const timeLabel = document.getElementById("timeLabel");
+
+    let userInteracted = false;
+    let isSeeking = false;
+
+    function pad(n){ return String(n).padStart(2,"0"); }
+    function fmtTime(sec){
+      if(!isFinite(sec)) return "00:00";
+      sec = Math.max(0, Math.floor(sec));
+      const m = Math.floor(sec/60);
+      const s = sec % 60;
+      return `${pad(m)}:${pad(s)}`;
+    }
+
+    (function restoreMusicPrefs(){
+      try{
+        const v = localStorage.getItem("bgm_volume");
+        if(v !== null) vol.value = v;
+        if(music) music.volume = Number(vol.value);
+
+        const t = localStorage.getItem("bgm_time");
+        if(t !== null && music) music.currentTime = Number(t);
+      }catch(e){}
+    })();
+
+    function updateMusicUI(){
+      if(!music) return;
+
+      const cur = music.currentTime || 0;
+      const dur = music.duration || 0;
+
+      timeLabel.textContent = `${fmtTime(cur)} / ${fmtTime(dur)}`;
+
+      if(!isSeeking && dur > 0){
+        seek.value = Math.round((cur / dur) * 1000);
+      }
+
+      if(music.paused){
+        songState.textContent = "Paused 🙂";
+        playBtn.textContent = "Play ▶";
+      } else {
+        songState.textContent = "Playing 💘🎶";
+        playBtn.textContent = "Pause ⏸";
+      }
+
+      muteBtn.textContent = music.muted ? "Unmute 🔊" : "Mute 🔇";
+    }
+
+    function fadeTo(target, ms=900){
+      if(!music) return;
+      const start = music.volume;
+      const steps = 24;
+      const stepMs = Math.max(10, Math.floor(ms/steps));
+      let i = 0;
+      const timer = setInterval(()=>{
+        i++;
+        const v = start + (target - start) * (i/steps);
+        music.volume = Math.max(0, Math.min(1, v));
+        if(i >= steps) clearInterval(timer);
+      }, stepMs);
+    }
+
+    function toggleMusic(){
+      if(!music) return;
+      userInteracted = true;
+
+      if(music.paused){
+        const targetVol = Number(vol.value);
+        music.volume = 0;
+        music.muted = false;
+
+        music.play().then(()=>{
+          fadeTo(targetVol, 900);
+          popHearts(10);
+          updateMusicUI();
+        }).catch(()=>{ updateMusicUI(); });
+      } else {
+        music.pause();
+        updateMusicUI();
+      }
+    }
+
+    function toggleMute(){
+      if(!music) return;
+      userInteracted = true;
+      music.muted = !music.muted;
+      updateMusicUI();
+    }
+
+    function restartSong(){
+      if(!music) return;
+      userInteracted = true;
+      music.currentTime = 0;
+      if(music.paused){
+        toggleMusic();
+      } else {
+        popHearts(6);
+        updateMusicUI();
+      }
+    }
+
+    vol.addEventListener("input", ()=>{
+      if(!music) return;
+      userInteracted = true;
+      music.volume = Number(vol.value);
+      try{ localStorage.setItem("bgm_volume", vol.value); }catch(e){}
+      updateMusicUI();
+    });
+
+    seek.addEventListener("mousedown", ()=>{ isSeeking = true; });
+    seek.addEventListener("touchstart", ()=>{ isSeeking = true; }, {passive:true});
+    seek.addEventListener("input", ()=>{
+      if(!music) return;
+      const dur = music.duration || 0;
+      if(dur > 0){
+        const p = Number(seek.value) / 1000;
+        timeLabel.textContent = `${fmtTime(p*dur)} / ${fmtTime(dur)}`;
+      }
+    });
+    seek.addEventListener("change", ()=>{
+      if(!music) return;
+      userInteracted = true;
+      const dur = music.duration || 0;
+      if(dur > 0){
+        const p = Number(seek.value) / 1000;
+        music.currentTime = p * dur;
+      }
+      isSeeking = false;
+      updateMusicUI();
+    });
+    seek.addEventListener("mouseup", ()=>{ isSeeking = false; });
+    seek.addEventListener("touchend", ()=>{ isSeeking = false; });
+
+    if(music){
+      music.addEventListener("timeupdate", ()=>{
+        updateMusicUI();
+        try{ localStorage.setItem("bgm_time", String(music.currentTime || 0)); }catch(e){}
+      });
+      music.addEventListener("loadedmetadata", updateMusicUI);
+      music.addEventListener("play", updateMusicUI);
+      music.addEventListener("pause", updateMusicUI);
+      music.addEventListener("ended", updateMusicUI);
+    }
+
+    window.addEventListener("click", ()=>{
+      if(!music || userInteracted) return;
+      userInteracted = true;
+      const targetVol = Number(vol.value);
+      music.volume = 0;
+      music.play().then(()=>{
+        fadeTo(targetVol, 900);
+        updateMusicUI();
+      }).catch(()=>{ updateMusicUI(); });
+    }, { once:true });
+
     // ========= INIT =========
     renderTimeline();
     renderTravels();
     renderSlide();
     setTimeout(()=>popHearts(6), 500);
+    updateMusicUI();
   </script>
 </body>
 </html>
