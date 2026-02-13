@@ -21,6 +21,7 @@
       --radius:26px;
     }
     *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
       font-family:'Noto Sans', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -29,7 +30,16 @@
       min-height:100vh;
       overflow-x:hidden;
     }
-    .wrap{max-width:1040px; margin:0 auto; padding:26px 18px 70px;}
+
+    /* ✅ Scroll progress */
+    .progress{
+      position:fixed; left:0; top:0; height:4px; width:0%;
+      background: var(--accent);
+      z-index:999;
+      box-shadow:0 6px 16px rgba(0,0,0,.18);
+    }
+
+    .wrap{max-width:1040px; margin:0 auto; padding:26px 18px 90px;}
     .hero{
       background:var(--card);
       backdrop-filter: blur(10px);
@@ -49,9 +59,7 @@
     .title{flex:1; min-width:260px;}
     h1{margin:0 0 8px; font-size:34px; letter-spacing:.2px}
     .subtitle{margin:0; color:var(--muted); font-size:16px; line-height:1.6}
-    .avatars{
-      display:flex; gap:12px; align-items:center;
-    }
+    .avatars{display:flex; gap:12px; align-items:center;}
     .avatar{
       width:92px; height:92px;
       border-radius:999px;
@@ -187,9 +195,9 @@
       justify-content:center;
       gap:10px;
       margin-top:10px;
+      user-select:none;
     }
-
-    /* ✅ CHANGED: slideshow image is now SQUARE */
+    /* ✅ SQUARE slideshow image */
     .slideshow img{
       width:min(380px, 90vw);
       aspect-ratio: 1 / 1;
@@ -200,7 +208,6 @@
       background:#f3f3f3;
       transition: opacity .4s ease;
     }
-
     .navBtn{
       border:none;
       width:48px; height:48px;
@@ -210,6 +217,7 @@
       font-size:26px;
       cursor:pointer;
       opacity:.92;
+      transition:.2s;
     }
     .navBtn:hover{transform: scale(1.04)}
 
@@ -236,6 +244,12 @@
       display:flex;
       flex-direction:column;
       gap:10px;
+      transition:.2s;
+    }
+    .travelCard:hover{transform: translateY(-2px)}
+    .travelCard.selected{
+      outline: 3px solid var(--accent);
+      transform: translateY(-2px);
     }
     .travelCard img{
       width:100%;
@@ -265,10 +279,60 @@
 
     /* Music section range styling */
     #musicSection input[type="range"]{ accent-color: var(--accent); }
+
+    /* ✅ Back to top */
+    .toTop{
+      position:fixed;
+      right:14px;
+      bottom:14px;
+      width:48px; height:48px;
+      border:none;
+      border-radius:999px;
+      background:#111;
+      color:#fff;
+      font-size:20px;
+      cursor:pointer;
+      box-shadow:0 14px 28px rgba(0,0,0,.22);
+      opacity:0;
+      transform: translateY(12px);
+      transition:.25s;
+      z-index:998;
+    }
+    .toTop.show{
+      opacity:.92;
+      transform: translateY(0);
+    }
+
+    /* ✅ Tiny confetti dots */
+    .confetti{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:60;
+      overflow:hidden;
+      display:none;
+    }
+    .confetti.show{display:block}
+    .confetti i{
+      position:absolute;
+      width:10px; height:10px;
+      border-radius:999px;
+      opacity:.95;
+      animation: confettiFall 1.1s ease-out forwards;
+    }
+    @keyframes confettiFall{
+      from{ transform: translateY(-20px) rotate(0deg); opacity:1 }
+      to{ transform: translateY(110vh) rotate(540deg); opacity:0 }
+    }
   </style>
 </head>
 
 <body>
+  <div class="progress" id="progress"></div>
+  <div class="confetti" id="confetti"></div>
+
+  <button class="toTop" id="toTop" aria-label="Back to top" title="Top">↑</button>
+
   <div class="wrap">
     <div class="hero">
       <div class="top">
@@ -281,9 +345,11 @@
         </div>
 
         <div class="avatars" aria-label="Our photos">
-          <img class="avatar" src="me.jpg" alt="My photo">
+          <img class="avatar" src="me.jpg" alt="My photo" loading="eager"
+               onerror="this.src='fallback.jpg'; this.onerror=null;">
           <div class="heartBadge" title="us">💞</div>
-          <img class="avatar" src="amar.jpg" alt="Amarjargal photo">
+          <img class="avatar" src="amar.jpg" alt="Amarjargal photo" loading="eager"
+               onerror="this.src='fallback.jpg'; this.onerror=null;">
         </div>
       </div>
 
@@ -344,15 +410,17 @@
       <h2>🖼️ Mini photo slideshow</h2>
       <p>Зарим мөчүүдийг дахин дахин үзмээр байдаг шүү 😌</p>
 
-      <div class="slideshow">
+      <div class="slideshow" id="slideshowBox">
         <button class="navBtn" onclick="prevSlide()" aria-label="Previous slide">‹</button>
-        <img id="slideImg" src="slide1.jpg" alt="Slideshow image">
+        <img id="slideImg" src="slide1.jpg" alt="Slideshow image" loading="lazy"
+             onerror="this.src='fallback.jpg'; this.onerror=null;">
         <button class="navBtn" onclick="nextSlide()" aria-label="Next slide">›</button>
       </div>
-      <div class="tiny" id="slideCaption">Slide 1</div>
+      <div class="tiny" id="slideCaption">Loading...</div>
 
       <div style="margin-top:12px;">
-        <img src="roach.jpg" alt="Funny jpg" style="max-width:170px; border-radius:18px; display:none;" id="roachjpg">
+        <img src="roach.jpg" alt="Funny jpg" style="max-width:170px; border-radius:18px; display:none;" id="roachjpg" loading="lazy"
+             onerror="this.src='fallback.jpg'; this.onerror=null;">
         <div class="tiny">P.S. Энэ ч ёстой аймаааар зураг шүү 😭🪳</div>
         <button class="pill secondary" onclick="togglejpg()">Show/Hide cockroach 🪳😂</button>
       </div>
@@ -386,6 +454,7 @@
         <button class="pill soft" onclick="allNotes()">Бүгдийг нь унших 📚</button>
       </div>
       <div id="notesBox" class="note">Товчлууран дээр дарна уу 💖</div>
+      <div class="tiny">⚠️ Сануулга: GitHub Pages public бол энд бичсэн бүх зүйл олон хүнд харагдана шүү.</div>
     </div>
 
     <!-- NEXT CHAPTER -->
@@ -410,8 +479,10 @@
         <b id="modalTitle">Memory</b>
         <button class="x" onclick="closeModal()" aria-label="Close">✕</button>
       </div>
-      <img id="modalImg" class="modalImg" alt="Preview"/>
+      <img id="modalImg" class="modalImg" alt="Preview"
+           onerror="this.src='fallback.jpg'; this.onerror=null;" />
       <div id="modalText" class="modalText"></div>
+      <div class="tiny" style="padding:6px 6px 0;">Tip: ESC дарвал хаагдана ✨</div>
     </div>
   </div>
 
@@ -420,7 +491,7 @@
   <script>
     // ========= DATA YOU CAN EDIT =========
 
-    // Timeline (edit titles/text to your real memories)
+    // Timeline
     const EVENTS = [
       { month: "September", img: "sep.png", title: "Анхны сэтгэгдэл 🌱", text: "Анхны сэтгэгдэл бол аягүй хөөрхөншд. Хийж байгаа үйлдэл, ярьж байгаа зүйл. Ялангуяа тэр гаргаж буй reaction нь бүр л..." },
       { month: "October",    img: "oct.png", title: "Crown Амараа ✨", text: "Crown Амараагийн ард суух бол зүгээр л айдас хүйдэс хаха. Харин хувийн жолооч хийх нь миний хувьд нэр төрийн хэрэг байсан шүү. Өдөр болгон чамайг хүргэж өгөх зорилготой сэрэх жишээний хаха." },
@@ -430,31 +501,31 @@
       { month: "Now",        img: "now.jpg", title: "Өнөөдөр 💘", text: "Завгүй өдөр хоногууд ард ардаасаа хөвөрсөөр. Хурдан буцах юмсан гэх бодлыг минь чиний story-нууд boost-лэх шиг 😳" }
     ];
 
-    // Courage notes
+    // Courage notes (⚠️ If your site is public, avoid personal phone numbers here)
     const COURAGE_NOTES = [
       "Яг үнэндээ хэний юу гэж хэлэх хэнд хамаатай юм бэ? Тийм биздээ. Зүгээр л өөрийнхөөрөө байхад л ийм хөөрхөн охин байгаад байгаам чинь, өөр юу хэрэгтэй гэж.",
-      "Хичээлийн хувьд битгий санаа зовоорой. Бүхнийг болгоно, бүгдийг чадна гэдэг охинд энэ мэт бол юу ч биш. Хэрэв тусламж хэрэгтэй бол би байна шүүдээ. call me baby +86 15842661726, +976 66167467",
+      "Хичээлийн хувьд битгий санаа зовоорой. Бүхнийг болгоно, бүгдийг чадна гэдэг охинд энэ мэт бол юу ч биш. Хэрэв тусламж хэрэгтэй бол би байна шүүдээ.",
       "Нэг зөвлөгөө өгөхөд: Хөөрхнөө гэж дуудуулж сурахдаа дасах хэрэгтэй шүү хаха.",
       "Мэдээж хэцүү цаг үеүүд болж өнгөрлөө, энэ бүхнийг давж гарсан нь чамайг ямар мундаг, сэтгэлийн хаттай, том болсон охин бэ гэдгийг харуулж байгаа юм.",
       "Харц чинь хамгийн хайр татам гэдгийг мэдэх үү? Сормуусаа дааж ядах нүдний чинь секунд болгон намайг илүү их хичээхэд хүргэдэг юм шүү.",
       "Ямар хүмүүжилтэй охин бэ гэж бодож билээ. Дараа нь мэргэжлийг нь сонсоод ямар ухаантай охин бэ гэж бодож билээ. Чи зүгээр л хамгийн best нь."
     ];
 
-    // Slideshow
+    // Slideshow (caption updates properly on load)
     const slides = [
       {src:"slide1.jpg", cap:"Slide 1 — (Энэ хоёр маань мөн ч их зүйл хэлдэгдээ. Жинхэнэ миний хөлдүүг гэсгээх гэж ядаж байгаа шүү хаха.)"},
       {src:"slide2.jpg", cap:"Slide 2 — (Энэ хэд яг л азын шоо мэт. Энэ шоонуудын ачаар л жоохон ч гэсэн сэтгэлийг чинь ойлгож авсан гэж боддогдоо.)"},
       {src:"slide3.jpg", cap:"Slide 3 — (Юм идэх ч завгүй хөөрхөн охинд бэлэг хайж билээ. Энэ хоёр хөөрхнөө яг хоёулан шиг биш байсан гэж үү хаха.)"}
     ];
 
-    // Travel choices (China cities + Seoul + Bangkok)
+    // Travel
     const TRAVELS = [
-      { id:"beijing",  country:"China",  tag:"History",     city:"Beijing",   img:"beijing.jpg",  text:"Great Wall + forbidden city vibes 🏯" },
-      { id:"shanghai", country:"China",  tag:"City lights", city:"Shanghai",  img:"shanghai.jpg", text:"Skylines, night walk, cute photos 🌃" },
-      { id:"chengdu",  country:"China",  tag:"Chill",       city:"Chengdu",   img:"chengdu.jpg",  text:"Pandas + spicy food + slow days 🐼🌶️" },
-      { id:"hangzhou", country:"China",  tag:"Romantic",    city:"Hangzhou",  img:"hangzhou.jpg", text:"West Lake + calm, dreamy 느낌 🌿" },
-      { id:"seoul",    country:"Korea",  tag:"K-vibe",      city:"Seoul",     img:"seoul.jpg",    text:"Cafés + night views + shopping 😌✨" },
-      { id:"bangkok",  country:"Thailand", tag:"Fun",       city:"Bangkok",   img:"bangkok.jpg",  text:"Street food + temples + chaos-but-fun 🌈" }
+      { id:"beijing",  country:"China",    tag:"History",     city:"Beijing",   img:"beijing.jpg",  text:"Great Wall + forbidden city vibes 🏯" },
+      { id:"shanghai", country:"China",    tag:"City lights", city:"Shanghai",  img:"shanghai.jpg", text:"Skylines, night walk, cute photos 🌃" },
+      { id:"chengdu",  country:"China",    tag:"Chill",       city:"Chengdu",   img:"chengdu.jpg",  text:"Pandas + spicy food + slow days 🐼🌶️" },
+      { id:"hangzhou", country:"China",    tag:"Romantic",    city:"Hangzhou",  img:"hangzhou.jpg", text:"West Lake + calm, dreamy 느낌 🌿" },
+      { id:"seoul",    country:"Korea",    tag:"K-vibe",      city:"Seoul",     img:"seoul.jpg",    text:"Cafés + night views + shopping 😌✨" },
+      { id:"bangkok",  country:"Thailand", tag:"Fun",         city:"Bangkok",   img:"bangkok.jpg",  text:"Street food + temples + chaos-but-fun 🌈" }
     ];
 
     // ========= ELEMENTS =========
@@ -469,11 +540,19 @@
     let slideIndex = 0;
     const slideImg = document.getElementById("slideImg");
     const slideCaption = document.getElementById("slideCaption");
+    const slideshowBox = document.getElementById("slideshowBox");
 
     // Travel
     const travelGrid = document.getElementById("travelGrid");
     const travelChoice = document.getElementById("travelChoice");
     let chosenTravelId = null;
+
+    // Progress + top
+    const progress = document.getElementById("progress");
+    const toTop = document.getElementById("toTop");
+
+    // Confetti
+    const confetti = document.getElementById("confetti");
 
     // ========= HELPERS =========
     function showHero(text){
@@ -494,6 +573,31 @@
       }
     }
 
+    // ✅ Confetti (no libraries)
+    function burstConfetti(n=38){
+      confetti.classList.add("show");
+      const vw = window.innerWidth;
+      for(let i=0;i<n;i++){
+        const dot = document.createElement("i");
+        dot.style.left = Math.random()*vw + "px";
+        dot.style.top = (-20 - Math.random()*80) + "px";
+        // random bright colors
+        dot.style.background = `hsl(${Math.floor(Math.random()*360)}, 90%, 60%)`;
+        dot.style.animationDuration = (0.9 + Math.random()*0.6) + "s";
+        dot.style.transform = `translateY(0) rotate(${Math.random()*180}deg)`;
+        confetti.appendChild(dot);
+        setTimeout(()=>dot.remove(), 1400);
+      }
+      setTimeout(()=>confetti.classList.remove("show"), 1450);
+    }
+
+    // ✅ Image fallback helper
+    function imgTag(src, alt, w, h){
+      return `<img src="${src}" alt="${alt}" loading="lazy"
+        onerror="this.src='fallback.jpg'; this.onerror=null;"
+        style="${w?`width:${w};`:''}${h?`height:${h};`:''}">`;
+    }
+
     // ========= MODAL =========
     function openModal(title, img, text){
       modalTitle.textContent = title;
@@ -501,10 +605,21 @@
       modalImg.alt = title;
       modalText.textContent = text || "";
       modal.classList.add("open");
+      document.body.style.overflow = "hidden"; // ✅ lock scroll
+      pauseSlides(); // ✅ pause slideshow while modal open
       popHearts(8);
     }
-    function closeModal(){ modal.classList.remove("open"); }
+    function closeModal(){
+      modal.classList.remove("open");
+      document.body.style.overflow = ""; // ✅ restore scroll
+      resumeSlides();
+    }
     modal.addEventListener("click", (ev) => { if(ev.target === modal) closeModal(); });
+
+    // ✅ ESC closes modal
+    window.addEventListener("keydown", (e)=>{
+      if(e.key === "Escape" && modal.classList.contains("open")) closeModal();
+    });
 
     // ========= TIMELINE =========
     function renderTimeline(){
@@ -513,7 +628,8 @@
         const card = document.createElement("div");
         card.className = "event reveal";
         card.innerHTML = `
-          <img src="${e.img}" alt="${e.month} memory" />
+          <img src="${e.img}" alt="${e.month} memory" loading="lazy"
+               onerror="this.src='fallback.jpg'; this.onerror=null;" />
           <div class="meta">
             <b>${e.month} — ${e.title}</b>
             <div>${e.text}</div>
@@ -578,6 +694,7 @@
       const chosen = chosenTravelId ? ` Бидний аялал: ${getTravelName(chosenTravelId)} 🧳💘` : "";
       box.textContent = "Яагаад ч юм энийг сонгохгүй байх гэж бодож байлаа😭💖 За тэгвэл…   Хэзээ завтай вэ? Юу ч хийхгүй алхах уу?✨" + chosen;
       popHearts(18);
+      burstConfetti(45); // ✅ confetti
     }
     function nextChapterNo(){
       const box = document.getElementById("nextBox");
@@ -587,17 +704,47 @@
     }
 
     // ========= SLIDESHOW =========
+    let slideTimer = null;
+
     function renderSlide(){
       slideImg.style.opacity = 0;
       setTimeout(()=>{
         slideImg.src = slides[slideIndex].src;
-        slideCaption.textContent = slides[slideIndex].cap;
+        slideCaption.textContent = slides[slideIndex].cap; // ✅ caption always from array
         slideImg.style.opacity = 1;
       }, 200);
     }
-    function nextSlide(){ slideIndex = (slideIndex+1) % slides.length; renderSlide(); popHearts(4); }
-    function prevSlide(){ slideIndex = (slideIndex-1+slides.length) % slides.length; renderSlide(); popHearts(4); }
-    setInterval(nextSlide, 4500);
+
+    function nextSlide(){
+      slideIndex = (slideIndex+1) % slides.length;
+      renderSlide();
+      popHearts(4);
+    }
+    function prevSlide(){
+      slideIndex = (slideIndex-1+slides.length) % slides.length;
+      renderSlide();
+      popHearts(4);
+    }
+
+    function startSlides(){
+      if(slideTimer) return;
+      slideTimer = setInterval(nextSlide, 4500);
+    }
+    function pauseSlides(){
+      if(!slideTimer) return;
+      clearInterval(slideTimer);
+      slideTimer = null;
+    }
+    function resumeSlides(){
+      if(modal.classList.contains("open")) return;
+      startSlides();
+    }
+
+    // ✅ pause on hover/touch interaction
+    slideshowBox.addEventListener("mouseenter", pauseSlides);
+    slideshowBox.addEventListener("mouseleave", resumeSlides);
+    slideshowBox.addEventListener("touchstart", pauseSlides, {passive:true});
+    slideshowBox.addEventListener("touchend", resumeSlides, {passive:true});
 
     // JPG toggle (roach)
     function togglejpg(){
@@ -616,8 +763,10 @@
       TRAVELS.forEach(t => {
         const el = document.createElement("div");
         el.className = "travelCard reveal";
+        el.dataset.id = t.id; // ✅ used for selected highlight
         el.innerHTML = `
-          <img src="${t.img}" alt="${t.city}" />
+          <img src="${t.img}" alt="${t.city}" loading="lazy"
+               onerror="this.src='fallback.jpg'; this.onerror=null;" />
           <div class="travelTitle">
             <b>${t.city}</b>
             <span class="tag">${t.country} • ${t.tag}</span>
@@ -652,6 +801,12 @@
       chosenTravelId = id;
       const t = TRAVELS.find(x => x.id === id);
       if(!t) return;
+
+      // ✅ highlight selected card
+      document.querySelectorAll(".travelCard").forEach(card=>card.classList.remove("selected"));
+      const selectedCard = document.querySelector(`.travelCard[data-id="${id}"]`);
+      if(selectedCard) selectedCard.classList.add("selected");
+
       travelChoice.textContent = `Chosen: ${t.city} 💘 — ${t.text}`;
       popHearts(14);
       showHero(`За 😳✨ тэгвэл нэг өдөр… ${t.city} руу хамт аялъя гэж бодъё. (Би энэ хэсгийг бүр илүү гоё болгоно!)`);
@@ -808,6 +963,7 @@
       music.addEventListener("ended", updateMusicUI);
     }
 
+    // ✅ first click autoplays music (browser policy friendly)
     window.addEventListener("click", ()=>{
       if(!music || userInteracted) return;
       userInteracted = true;
@@ -819,10 +975,31 @@
       }).catch(()=>{ updateMusicUI(); });
     }, { once:true });
 
+    // ========= PROGRESS + TOP BUTTON =========
+    function updateProgress(){
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const p = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      progress.style.width = p + "%";
+      if(scrollTop > 500) toTop.classList.add("show");
+      else toTop.classList.remove("show");
+    }
+    window.addEventListener("scroll", updateProgress, {passive:true});
+    updateProgress();
+
+    toTop.addEventListener("click", ()=>{
+      window.scrollTo({top:0, behavior:"smooth"});
+    });
+
     // ========= INIT =========
     renderTimeline();
     renderTravels();
+
+    // ✅ ensure caption updates immediately from your slides array
     renderSlide();
+    slideCaption.textContent = slides[0].cap;
+
+    startSlides();
     setTimeout(()=>popHearts(6), 500);
     updateMusicUI();
   </script>
